@@ -1,7 +1,7 @@
 FROM ubuntu:xenial
 
 RUN apt update
-RUN apt -y install autoconf automake libtool libltdl-dev libao-dev libavahi-compat-libdnssd-dev avahi-daemon git libpulse0 avahi-utils
+RUN apt -y install autoconf automake libtool libltdl-dev libao-dev libavahi-compat-libdnssd-dev avahi-daemon libpulse0 avahi-utils
 
 RUN mkdir /build
 WORKDIR /build
