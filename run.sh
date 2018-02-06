@@ -7,4 +7,4 @@ sleep 5
 
 cd /build
 export PULSE_SERVER=pulse
-exec ./src/shairplay
+exec ./src/shairplay --ao_driver=pulse
