@@ -1,6 +1,6 @@
-FROM ubuntu:xenial as build
+FROM alpine:edge as build
 
-RUN apt update && apt -y install autoconf automake libtool libltdl-dev libao-dev libavahi-compat-libdnssd-dev
+RUN apk add --no-cache gcc autoconf automake musl-dev make libtool libltdl libao-dev avahi-compat-libdns_sd
 
 RUN mkdir /build
 WORKDIR /build
@@ -10,10 +10,10 @@ RUN ./configure
 RUN make
 
 
-FROM ubuntu:xenial
+FROM alpine:edge
 
-RUN apt update && apt -y install avahi-daemon libavahi-compat-libdnssd1 libao4 libpulse0 avahi-utils
-RUN ln -s libdns_sd.so.1 /usr/lib/x86_64-linux-gnu/libdns_sd.so
+RUN apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ avahi avahi-compat-libdns_sd libao pulseaudio-libs avahi-tools openrc dbus
+#RUN ln -s libdns_sd.so.1 /usr/lib/x86_64-linux-gnu/libdns_sd.so
 COPY avahi-daemon.conf /etc/avahi/
 COPY --from=build /build /build
 CMD /build/run.sh
