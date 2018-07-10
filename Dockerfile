@@ -16,4 +16,5 @@ RUN apt update && apt -y install avahi-daemon libavahi-compat-libdnssd1 libao4 l
 RUN ln -s libdns_sd.so.1 /usr/lib/x86_64-linux-gnu/libdns_sd.so
 COPY avahi-daemon.conf /etc/avahi/
 COPY --from=build /build /build
+ENV PULSE_SERVER=pulse
 CMD /build/run.sh
