@@ -38,7 +38,11 @@
 #define MAX_DEVICEID 18
 #define MAX_SERVNAME 256
 
-#define USE_LIBDL (defined(HAVE_LIBDL) && !defined(__APPLE__))
+#if defined(HAVE_LIBDL) && !defined(__APPLE__)
+# define USE_LIBDL 1
+#else
+# define USE_LIBDL 0
+#endif
 
 #if defined(WIN32) || USE_LIBDL
 # ifdef WIN32

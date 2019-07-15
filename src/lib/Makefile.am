@@ -1,13 +1,21 @@
-SUBDIRS = crypto alac
+if WITH_PLAYFAIR
+PLAYFAIR_SUBDIR = playfair
+PLAYFAIR_LIBADD = playfair/libplayfair.la
+FAIRPLAY_SOURCE = fairplay_playfair.c
+else
+FAIRPLAY_SOURCE = fairplay_dummy.c
+endif
+
+SUBDIRS = crypto alac curve25519 ed25519 $(PLAYFAIR_SUBDIR)
 
 AM_CPPFLAGS = -I$(top_srcdir)/include/shairplay
 
 lib_LTLIBRARIES = libshairplay.la
-libshairplay_la_SOURCES = base64.c base64.h digest.c digest.h dnssd.c dnssdint.h http_parser.c http_parser.h http_request.c http_request.h http_response.c http_response.h httpd.c httpd.h logger.c logger.h netutils.c netutils.h raop.c raop_buffer.c raop_buffer.h raop_rtp.c raop_rtp.h rsakey.c rsakey.h rsapem.c rsapem.h sdp.c sdp.h utils.c utils.h compat.h memalign.h sockets.h threads.h
+libshairplay_la_SOURCES = base64.c base64.h digest.c digest.h dnssd.c dnssdint.h http_parser.c http_parser.h http_request.c http_request.h http_response.c http_response.h httpd.c httpd.h logger.c logger.h netutils.c netutils.h raop.c raop_buffer.c raop_buffer.h raop_rtp.c raop_rtp.h rsakey.c rsakey.h rsapem.c rsapem.h sdp.c sdp.h aes_ctr.c aes_ctr.h pairing.c pairing.h utils.c utils.h $(FAIRPLAY_SOURCE) fairplay.h plist.c plist.h compat.h memalign.h sockets.h threads.h
 libshairplay_la_CPPFLAGS = $(AM_CPPFLAGS)
 
 # This library depends on 3rd party libraries
-libshairplay_la_LIBADD = crypto/libcrypto.la alac/libalac.la
+libshairplay_la_LIBADD = crypto/libcrypto.la alac/libalac.la curve25519/libcurve25519.la ed25519/libed25519.la $(PLAYFAIR_LIBADD)
 libshairplay_la_LDFLAGS = -no-undefined -version-info 0:0:0
 
 ### Update -version-info above with the following rules
